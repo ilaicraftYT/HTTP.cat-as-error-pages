@@ -11,17 +11,13 @@ var allErrors = [
 	599
 ];
 
-chrome.webRequest.onCompleted.addListener((details) => {
-	if(allErrors.includes(details.statusCode)) {
-		chrome.tabs.update(details.tabId, {
-			url: `${chrome.runtime.getURL(`index.html`)}?url=${encodeURIComponent(details.url)}&status=${encodeURIComponent(details.statusLine)}&statusCode=${encodeURIComponent(details.statusCode)}`,
+browser.webRequest.onHeadersReceived.addListener((details) => {
+	console.log(details.statusCode)
+	if(!details.initiator && allErrors.includes(details.statusCode)) {
+		browser.tabs.update(details.tabId, {
+			url: `${browser.runtime.getURL(`index.html`)}?url=${encodeURIComponent(details.url)}&status=${encodeURIComponent(details.statusLine)}&statusCode=${encodeURIComponent(details.statusCode)}`,
 		});
 	}
 }, {
-	urls: [
-		`<all_urls>`,
-	],
-	types: [
-		`main_frame`,
-	],
-});
+	urls: ["<all_urls>"], types: ["main_frame"]
+})

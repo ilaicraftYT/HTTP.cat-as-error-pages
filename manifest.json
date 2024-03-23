@@ -1,5 +1,4 @@
 {
-	"update_url": "https://clients2.google.com/service/update2/crx",
 	"name": "HTTP.cat as error pages",
 	"description": "Replaces all error pages with HTTP cat :3",
 	"version": "1.0.0",
@@ -11,12 +10,11 @@
 		"512": "http.cat-512px.png"
 	},
 	"background": {
-		"scripts": [
-			"background.js"
-		]
+		"scripts": ["background.js"]
 	},
 	"permissions": [
 		"webRequest",
+		"webRequestBlocking",
 		"<all_urls>"
 	],
 	"web_accessible_resources": [
