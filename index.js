@@ -1,23 +1,20 @@
-const params = {};
-window.location.search.slice(1).split(/&/g).forEach(x => {
-	params[y[0]] = decodeURIComponent(x.split(/=/g)[1]);
-});
+const params = new URL(document.location).searchParams;
 
 const retryNode = document.createElement("span");
 retryNode.classList.add("top-left");
 retryNode.innerText = "🔄";
 retryNode.onclick = () => {
-	window.location.replace(params.url);
+	window.location.replace(window.localStorage.getItem(params.get("url_id")));
+	window.localStorage.removeItem(params.get("url_id"));
 };
 
-document.title = `HTTP.cat - ${params.statusCode}`;
+document.title = `HTTP.cat - ${params.get("status_code")}`;
 
 const divNode = document.createElement("div");
 divNode.classList.add("center");
 
 const imgNode = document.createElement("img");
-imgNode.src = `./imgs/${params.statusCode}.jpg`;
-//imgNode.src = `https://http.cat/images/${params.statusCode}.jpg`;
+imgNode.src = `./imgs/${params.get("status_code")}.jpg`;
 
 document.body.appendChild(divNode);
 divNode.appendChild(imgNode);
@@ -27,7 +24,7 @@ const audio = new Audio("./05. Eggy Toast - Saxophone guy.mp3");
 audio.loop = true;
 
 function checkPause() {
-	if(window.localStorage.pause === "1") {
+	if(window.localStorage.getItem("pause") === "1") {
 		audio.pause();
 	} else {
 		audio.play();
